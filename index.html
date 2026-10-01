@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>露營麥當勞團購點餐系統</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-amber-50 text-gray-800 min-h-screen py-6 px-3 sm:px-4">
+  <div class="max-w-4xl mx-auto">
+    
+    <!-- Header Banner -->
+    <header class="bg-gradient-to-r from-red-600 to-red-700 text-white p-5 sm:p-6 rounded-2xl shadow-lg mb-6 text-center border-b-4 border-amber-400">
+      <h1 class="text-2xl sm:text-3xl font-extrabold flex items-center justify-center gap-2.5">
+        <span>⛺</span> 露營麥當勞團購點餐
+      </h1>
+      <p class="mt-1.5 text-red-100 text-xs sm:text-sm">快速選擇主餐、配餐與飲料，自動計算袋子費用，一鍵複製送出 LINE 訊息！</p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      
+      <!-- Order Form (Left side) -->
+      <div class="lg:col-span-7 space-y-6">
+        
+        <!-- User Info Card -->
+        <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-amber-200">
+          <h2 class="text-base font-bold text-red-600 mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-user-tag"></i> 訂購人資訊
+          </h2>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 mb-1">團露編號 <span class="text-red-500">*</span></label>
+              <input type="text" id="groupNo" placeholder="如: A01" class="w-full px-3 py-2 text-sm border rounded-xl focus:ring-2 focus:ring-red-500 outline-none border-gray-300">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 mb-1">姓名 <span class="text-red-500">*</span></label>
+              <input type="text" id="userName" placeholder="請輸入姓名" class="w-full px-3 py-2 text-sm border rounded-xl focus:ring-2 focus:ring-red-500 outline-none border-gray-300">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 mb-1">電話 <span class="text-red-500">*</span></label>
+              <input type="tel" id="userPhone" placeholder="09xx-xxx-xxx" class="w-full px-3 py-2 text-sm border rounded-xl focus:ring-2 focus:ring-red-500 outline-none border-gray-300">
+            </div>
+          </div>
+        </div>
+
+        <!-- Add Item Card -->
+        <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-amber-200">
+          <h2 class="text-base font-bold text-red-600 mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-utensils"></i> 新增餐點
+          </h2>
+
+          <div class="space-y-4">
+            <!-- Main Meal Selection -->
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 mb-1">選擇主食 / 點心 / 飲料</label>
+              <select id="mainSelect" class="w-full p-2.5 text-sm border rounded-xl bg-gray-50 focus:ring-2 focus:ring-red-500 outline-none border-gray-300" onchange="handleMainChange()">
+                <option value="">-- 請選擇品項 --</option>
+                <optgroup label="2026 期間限定新品">
+                  <option value="原味四盎司牛肉堡|92|main">原味四盎司牛肉堡 ($92)</option>
+                  <option value="辣味四盎司牛肉堡|92|main">辣味四盎司牛肉堡 ($92)</option>
+                  <option value="原味雙層四盎司牛肉堡|132|main">原味雙層四盎司牛肉堡 ($132)</option>
+                  <option value="辣味雙層四盎司牛肉堡|132|main">辣味雙層四盎司牛肉堡 ($132)</option>
+                  <option value="蒜香雙牛堡|119|main">蒜香雙牛堡 ($119)</option>
+                  <option value="蒜香辣雞腿堡|119|main">蒜香辣雞腿堡 ($119)</option>
+                  <option value="巧克力脆脆冰炫風|69|snack">巧克力脆脆冰炫風 ($69)</option>
+                  <option value="香草奶昔|69|snack">香草奶昔 ($69)</option>
+                  <option value="草莓奶昔|69|snack">草莓奶昔 ($69)</option>
+                  <option value="香芋派|42|snack">香芋派 ($42)</option>
+                </optgroup>
+                <optgroup label="經典主餐堡類/雞塊">
+                  <option value="大麥克|78|main">大麥克 ($78)</option>
+                  <option value="雙層牛肉吉事堡|72|main">雙層牛肉吉事堡 ($72)</option>
+                  <option value="四盎司牛肉堡|92|main">四盎司牛肉堡 ($92)</option>
+                  <option value="雙層四盎司牛肉堡|132|main">雙層四盎司牛肉堡 ($132)</option>
+                  <option value="麥香雞|48|main">麥香雞 ($48)</option>
+                  <option value="麥克鷄塊(6塊)|68|main">麥克鷄塊 6塊 ($68)</option>
+                  <option value="麥克鷄塊(10塊)|109|main">麥克鷄塊 10塊 ($109)</option>
+                  <option value="勁辣鷄腿堡|78|main">勁辣鷄腿堡 ($78)</option>
+                  <option value="麥脆鷄腿(2塊)|126|main">麥脆鷄腿 2塊 ($126)</option>
+                  <option value="麥香魚|52|main">麥香魚 ($52)</option>
+                  <option value="BLT安格斯牛肉堡|122|main">BLT安格斯牛肉堡 ($122)</option>
+                  <option value="蕈菇安格斯牛肉堡|132|main">蕈菇安格斯牛肉堡 ($132)</option>
+                  <option value="凱撒辣脆雞沙拉|112|main">凱撒辣脆雞沙拉 ($112)</option>
+                  <option value="義式烤雞沙拉|112|main">義式烤雞沙拉 ($112)</option>
+                </optgroup>
+                <optgroup label="點心與單點">
+                  <option value="漢堡|36|snack">漢堡 ($36)</option>
+                  <option value="吉事漢堡|48|snack">吉事漢堡 ($48)</option>
+                  <option value="薯條(小)|40|snack">薯條(小) ($40)</option>
+                  <option value="薯條(中)|50|snack">薯條(中) ($50)</option>
+                  <option value="薯條(大)|66|snack">薯條(大) ($66)</option>
+                  <option value="薯餅|37|snack">薯餅 ($37)</option>
+                  <option value="麥克鷄塊(4塊)|48|snack">麥克鷄塊 4塊 ($48)</option>
+                  <option value="酥嫩鷄翅(2塊)|49|snack">酥嫩鷄翅(2塊) ($49)</option>
+                  <option value="勁辣香鷄翅(2塊)|49|snack">勁辣香鷄翅(2塊) ($49)</option>
+                  <option value="金黃地瓜條|66|snack">金黃地瓜條 ($66)</option>
+                  <option value="蘋果派|40|snack">蘋果派 ($40)</option>
+                  <option value="OREO冰炫風|59|snack">OREO冰炫風 ($59)</option>
+                  <option value="蛋捲冰淇淋|18|snack">蛋捲冰淇淋 ($18)</option>
+                  <option value="大蛋捲冰淇淋|32|snack">大蛋捲冰淇淋 ($32)</option>
+                  <option value="玉米湯(小)|48|snack">玉米湯(小) ($48)</option>
+                  <option value="玉米湯(大)|58|snack">玉米湯(大) ($58)</option>
+                </optgroup>
+                <optgroup label="單點飲料">
+                  <option value="可口可樂(中)|38|snack">可口可樂(中) ($38)</option>
+                  <option value="可樂 Zero(中)|38|snack">可樂 Zero(中) ($38)</option>
+                  <option value="雪碧(中)|38|snack">雪碧(中) ($38)</option>
+                  <option value="檸檬風味紅茶(中)|38|snack">檸檬風味紅茶(中) ($38)</option>
+                  <option value="無糖冰紅茶(中)|43|snack">無糖冰紅茶(中) ($43)</option>
+                  <option value="無糖冰綠茶(中)|43|snack">無糖冰綠茶(中) ($43)</option>
+                  <option value="熱紅茶|38|snack">熱紅茶 ($38)</option>
+                  <option value="冰奶茶(大)|51|snack">冰奶茶(大) ($51)</option>
+                  <option value="熱奶茶(中)|51|snack">熱奶茶(中) ($51)</option>
+                  <option value="鮮乳|33|snack">鮮乳 ($33)</option>
+                  <option value="台灣鮮榨柳丁汁|68|snack">台灣鮮榨柳丁汁 ($68)</option>
+                  <option value="經典美式咖啡(中)|50|snack">經典美式咖啡(中) ($50)</option>
+                  <option value="冰經典美式咖啡(中)|67|snack">冰經典美式咖啡(中) ($67)</option>
+                  <option value="經典那堤(中)|77|snack">經典那堤(中) ($77)</option>
+                  <option value="經典那堤(大)|92|snack">經典那堤(大) ($92)</option>
+                  <option value="經典卡布奇諾(中)|80|snack">經典卡布奇諾(中) ($80)</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <!-- Single or Combo Option Switcher -->
+            <div id="typeArea" class="hidden">
+              <label class="block text-xs font-semibold text-gray-700 mb-1">用餐型態</label>
+              <div class="flex gap-3">
+                <label class="flex items-center gap-2 border p-2 rounded-xl cursor-pointer hover:bg-amber-50 flex-1 text-xs border-gray-200">
+                  <input type="radio" name="orderType" value="single" checked onchange="toggleComboOptions()" class="text-red-600 focus:ring-red-500">
+                  <span class="font-medium text-gray-800">單點</span>
+                </label>
+                <label class="flex items-center gap-2 border p-2 rounded-xl cursor-pointer hover:bg-amber-50 flex-1 text-xs border-gray-200">
+                  <input type="radio" name="orderType" value="combo" onchange="toggleComboOptions()" class="text-red-600 focus:ring-red-500">
+                  <span class="font-medium text-gray-800">超值套餐</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Combo Customization -->
+            <div id="comboBlock" class="hidden space-y-3 bg-amber-50/70 p-3.5 rounded-xl border border-amber-200">
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">選擇套餐配餐</label>
+                <select id="comboSelect" onchange="handleComboDetailChange()" class="w-full p-2 text-xs border rounded-lg bg-white outline-none border-gray-300">
+                  <option value="A|75|經典配餐 (中薯+$38飲品)">A 經典配餐 (+$75) - 中薯 + $38飲品</option>
+                  <option value="B|80|清爽配餐 (四季沙拉+$38飲品)">B 清爽配餐 (+$80) - 四季沙拉 + $38飲品</option>
+                  <option value="C|94|勁脆配餐 (麥脆鷄腿+$38飲品)">C 勁脆配餐 (+$94) - 麥脆鷄腿 + $38飲品</option>
+                  <option value="D|109|炫冰配餐 (冰炫風+小薯+$38飲品)">D 炫冰配餐 (+$109) - 冰炫風 + 小薯 + $38飲品</option>
+                  <option value="E|109|豪吃配餐 (6塊麥克鷄塊+小薯+$38飲品)">E 豪吃配餐 (+$109) - 6塊麥克鷄塊 + 小薯 + $38飲品</option>
+                </select>
+              </div>
+
+              <!-- A餐大薯升級 -->
+              <div id="optUpgradeFries" class="hidden">
+                <label class="flex items-center gap-2 text-xs text-gray-700 cursor-pointer bg-white p-2 rounded-lg border border-amber-200">
+                  <input type="checkbox" id="friesUpgradeCheck" class="text-red-600 rounded focus:ring-red-500">
+                  <span class="font-medium">🍟 薯條升級大薯 (+$19)</span>
+                </label>
+              </div>
+
+              <!-- B餐沙拉醬料選擇 -->
+              <div id="optSaladDressing" class="hidden">
+                <label class="block text-xs font-semibold text-gray-700 mb-1">🥗 沙拉醬料選擇</label>
+                <select id="saladDressingSelect" class="w-full p-2 text-xs border rounded-lg bg-white outline-none border-gray-300">
+                  <option value="千島醬">千島醬</option>
+                  <option value="和風醬">和風醬</option>
+                </select>
+              </div>
+
+              <!-- C餐麥脆雞口味選擇 -->
+              <div id="optChickenFlavor" class="hidden">
+                <label class="block text-xs font-semibold text-gray-700 mb-1">🍗 麥脆鷄腿口味選擇</label>
+                <select id="chickenFlavorSelect" class="w-full p-2 text-xs border rounded-lg bg-white outline-none border-gray-300">
+                  <option value="原味">原味</option>
+                  <option value="辣味">辣味</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">套餐飲料 (預設$38飲品，換購補差價，無小杯)</label>
+                <select id="drinkSelect" class="w-full p-2 text-xs border rounded-lg bg-white outline-none border-gray-300">
+                  <option value="可口可樂(中)|0">可口可樂 (中) ($38 - 補$0)</option>
+                  <option value="可樂 Zero(中)|0">可樂 Zero (中) ($38 - 補$0)</option>
+                  <option value="雪碧(中)|0">雪碧 (中) ($38 - 補$0)</option>
+                  <option value="檸檬風味紅茶(中)|0">檸檬風味紅茶 (中) ($38 - 補$0)</option>
+                  <option value="無糖冰紅茶(中)|5">無糖冰紅茶 (中) ($43 - 補$5)</option>
+                  <option value="無糖冰綠茶(中)|5">無糖冰綠茶 (中) ($43 - 補$5)</option>
+                  <option value="熱紅茶|0">熱紅茶 ($38 - 補$0)</option>
+                  <option value="冰奶茶(大)|13">冰奶茶 (大) ($51 - 補$13)</option>
+                  <option value="熱奶茶(中)|13">熱奶茶 (中) ($51 - 補$13)</option>
+                  <option value="鮮乳|0">鮮乳 ($33 - 補$0)</option>
+                  <option value="台灣鮮榨柳丁汁|30">台灣鮮榨柳丁汁 ($68 - 補$30)</option>
+                  <option value="經典美式咖啡(中)|12">經典美式咖啡 (中) ($50 - 補$12)</option>
+                  <option value="冰經典美式咖啡(中)|29">冰經典美式咖啡 (中) ($67 - 補$29)</option>
+                  <option value="經典那堤(中)|39">經典那堤 (中) ($77 - 補$39)</option>
+                  <option value="經典那堤(大)|54">經典那堤 (大) ($92 - 補$54)</option>
+                  <option value="經典卡布奇諾(中)|42">經典卡布奇諾 (中) ($80 - 補$42)</option>
+                  <option value="玉米湯(小)|10">玉米湯 (小) ($48 - 補$10)</option>
+                  <option value="玉米湯(大)|20">玉米湯 (大) ($58 - 補$20)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Quantity & Add Button -->
+            <div class="flex gap-3 items-end">
+              <div class="w-1/3 sm:w-1/4">
+                <label class="block text-xs font-semibold text-gray-600 mb-1">數量</label>
+                <input type="number" id="itemQty" value="1" min="1" max="20" class="w-full p-2 text-sm border rounded-xl text-center outline-none focus:ring-2 focus:ring-red-500 border-gray-300">
+              </div>
+              <button onclick="addItem()" class="flex-1 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-bold py-2 px-4 rounded-xl shadow transition duration-150 text-sm">
+                <i class="fa-solid fa-plus mr-1"></i> 加入清單
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Cart & Calculation Panel (Right side) -->
+      <div class="lg:col-span-5 space-y-6">
+        
+        <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-amber-200">
+          <h2 class="text-base font-bold text-red-600 mb-3 flex items-center justify-between">
+            <span><i class="fa-solid fa-cart-shopping"></i> 已選餐點</span>
+            <button onclick="clearCart()" class="text-xs text-gray-400 hover:text-red-500 font-normal">清空</button>
+          </h2>
+
+          <!-- Cart Items Container -->
+          <div id="cartList" class="divide-y divide-gray-100 max-h-60 overflow-y-auto mb-3 pr-1">
+            <p class="text-center text-gray-400 text-xs py-6">尚無選購餐點，請點選左側新增</p>
+          </div>
+
+          <!-- Plastic Bag Rules & Options Display -->
+          <div class="border-t border-dashed pt-3 space-y-2 text-xs bg-gray-50 p-3 rounded-xl">
+            <div class="flex justify-between items-center text-gray-700">
+              <span>套餐數量：</span>
+              <span id="comboCount" class="font-bold text-red-600">0 份</span>
+            </div>
+            <div class="flex justify-between items-center text-gray-700">
+              <span class="flex items-center gap-1">
+                <i class="fa-solid fa-bag-shopping text-gray-500"></i> 塑膠袋 ($2/個)：
+              </span>
+              <div class="flex items-center gap-1.5">
+                <span id="bagCount" class="font-bold text-gray-800">0</span> 個
+                <span id="bagTypeTag" class="text-[10px] bg-gray-200 text-gray-600 px-1.5 py-0.5 rounded">未達套餐</span>
+              </div>
+            </div>
+
+            <!-- Manual Plastic Bag option for Single items only -->
+            <div id="singleBagOption" class="hidden pt-1 border-t border-gray-200">
+              <label class="flex items-center gap-2 text-gray-700 cursor-pointer">
+                <input type="checkbox" id="manualBagCheck" onchange="renderCart()" class="text-red-600 rounded focus:ring-red-500">
+                <span class="text-[11px]">純單點自由加購塑膠袋 1 個 (+$2)</span>
+              </label>
+            </div>
+
+            <p id="bagNotice" class="text-[11px] text-gray-400 leading-tight pt-0.5">
+              * 含有套餐時強制加購：1~4份套餐購買 1 個袋子，5~8份購買 2 個，依此類推。純單點不強制加購。
+            </p>
+          </div>
+
+          <!-- Total Price -->
+          <div class="mt-4 pt-3 border-t flex justify-between items-center">
+            <span class="text-sm font-bold text-gray-800">總金額：</span>
+            <span id="totalPrice" class="text-2xl font-extrabold text-red-600">$0</span>
+          </div>
+
+          <!-- Order Action Button -->
+          <button onclick="submitOrder()" class="w-full mt-4 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold py-2.5 rounded-xl shadow text-center transition text-sm flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-check"></i> 完成訂購並產生 LINE 文字
+          </button>
+        </div>
+
+        <!-- LINE Message Textarea Result -->
+        <div id="resultBlock" class="hidden bg-white p-4 rounded-2xl shadow-sm border border-amber-200">
+          <h2 class="text-xs font-bold text-gray-800 mb-2 flex items-center justify-between">
+            <span><i class="fa-solid fa-file-invoice"></i> LINE 格式點餐訊息</span>
+            <button onclick="copyResult()" class="text-xs bg-amber-100 text-amber-800 px-2.5 py-1 rounded-lg hover:bg-amber-200 font-semibold transition">
+              <i class="fa-solid fa-copy"></i> 複製文字
+            </button>
+          </h2>
+          <textarea id="resultText" readonly class="w-full h-48 p-2.5 text-xs bg-gray-50 border rounded-xl font-mono focus:outline-none border-gray-200 leading-relaxed"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let currentCart = [];
+
+    function handleMainChange() {
+      const select = document.getElementById('mainSelect');
+      const typeArea = document.getElementById('typeArea');
+      const comboBlock = document.getElementById('comboBlock');
+
+      if (!select.value) {
+        typeArea.classList.add('hidden');
+        comboBlock.classList.add('hidden');
+        return;
+      }
+
+      const [name, price, type] = select.value.split('|');
+
+      if (type === 'snack') {
+        typeArea.classList.add('hidden');
+        comboBlock.classList.add('hidden');
+        document.querySelector('input[name="orderType"][value="single"]').checked = true;
+      } else {
+        typeArea.classList.remove('hidden');
+        toggleComboOptions();
+      }
+    }
+
+    function toggleComboOptions() {
+      const isCombo = document.querySelector('input[name="orderType"]:checked').value === 'combo';
+      const comboBlock = document.getElementById('comboBlock');
+      if (isCombo) {
+        comboBlock.classList.remove('hidden');
+        handleComboDetailChange();
+      } else {
+        comboBlock.classList.add('hidden');
+      }
+    }
+
+    function handleComboDetailChange() {
+      const comboVal = document.getElementById('comboSelect').value;
+      const cLetter = comboVal.split('|')[0];
+
+      const optFries = document.getElementById('optUpgradeFries');
+      const optSalad = document.getElementById('optSaladDressing');
+      const optChicken = document.getElementById('optChickenFlavor');
+
+      optFries.classList.add('hidden');
+      optSalad.classList.add('hidden');
+      optChicken.classList.add('hidden');
+
+      if (cLetter === 'A') {
+        optFries.classList.remove('hidden');
+      } else if (cLetter === 'B') {
+        optSalad.classList.remove('hidden');
+      } else if (cLetter === 'C') {
+        optChicken.classList.remove('hidden');
+      }
+    }
+
+    function addItem() {
+      const mainSelect = document.getElementById('mainSelect');
+      if (!mainSelect.value) {
+        alert('請先選擇品項！');
+        return;
+      }
+
+      const [mainName, mainPriceStr, mainType] = mainSelect.value.split('|');
+      const mainPrice = parseInt(mainPriceStr);
+      const isCombo = mainType === 'main' && document.querySelector('input[name="orderType"]:checked').value === 'combo';
+      const qty = parseInt(document.getElementById('itemQty').value) || 1;
+
+      let itemObj = {
+        id: Date.now(),
+        mainName: mainName,
+        isCombo: isCombo,
+        qty: qty,
+        unitPrice: mainPrice,
+        details: ''
+      };
+
+      if (isCombo) {
+        const comboSelect = document.getElementById('comboSelect').value;
+        const [cLetter, cPriceStr, cDesc] = comboSelect.split('|');
+        let cPrice = parseInt(cPriceStr);
+
+        const drinkSelect = document.getElementById('drinkSelect').value;
+        const [dName, dPriceStr] = drinkSelect.split('|');
+        const dPrice = parseInt(dPriceStr);
+
+        let extraNotes = [];
+
+        if (cLetter === 'A') {
+          const isUpgraded = document.getElementById('friesUpgradeCheck').checked;
+          if (isUpgraded) {
+            cPrice += 19;
+            extraNotes.push('升級大薯 (+$19)');
+          }
+        } else if (cLetter === 'B') {
+          const dressing = document.getElementById('saladDressingSelect').value;
+          extraNotes.push(`醬料: ${dressing}`);
+        } else if (cLetter === 'C') {
+          const flavor = document.getElementById('chickenFlavorSelect').value;
+          extraNotes.push(`口味: ${flavor}`);
+        }
+
+        itemObj.unitPrice = mainPrice + cPrice + dPrice;
+        itemObj.comboName = `${cLetter}配餐`;
+        itemObj.drinkName = dName;
+        
+        let noteText = extraNotes.length > 0 ? ` (${extraNotes.join(', ')})` : '';
+        itemObj.details = `${cLetter}配餐${noteText} / 飲品: ${dName} (${dPrice > 0 ? '+$' + dPrice : '免補差價'})`;
+      } else {
+        itemObj.details = '單點';
+      }
+
+      currentCart.push(itemObj);
+      renderCart();
+
+      // 重置欄位設定
+      document.getElementById('itemQty').value = 1;
+      document.getElementById('friesUpgradeCheck').checked = false;
+    }
+
+    function removeItem(id) {
+      currentCart = currentCart.filter(item => item.id !== id);
+      renderCart();
+    }
+
+    function clearCart() {
+      currentCart = [];
+      if (document.getElementById('manualBagCheck')) {
+        document.getElementById('manualBagCheck').checked = false;
+      }
+      renderCart();
+    }
+
+    function calculateBagsAndTotal() {
+      let totalComboQty = 0;
+      let itemsTotal = 0;
+
+      currentCart.forEach(item => {
+        itemsTotal += item.unitPrice * item.qty;
+        if (item.isCombo) {
+          totalComboQty += item.qty;
+        }
+      });
+
+      let bagQty = 0;
+      let isMandatory = false;
+
+      if (totalComboQty > 0) {
+        bagQty = Math.ceil(totalComboQty / 4);
+        isMandatory = true;
+      } else if (currentCart.length > 0) {
+        const manualBag = document.getElementById('manualBagCheck') ? document.getElementById('manualBagCheck').checked : false;
+        if (manualBag) {
+          bagQty = 1;
+        }
+      }
+
+      const bagTotal = bagQty * 2;
+      const finalTotal = itemsTotal + bagTotal;
+
+      return {
+        totalComboQty,
+        bagQty,
+        bagTotal,
+        itemsTotal,
+        finalTotal,
+        isMandatory
+      };
+    }
+
+    function renderCart() {
+      const cartList = document.getElementById('cartList');
+      const comboCountSpan = document.getElementById('comboCount');
+      const bagCountSpan = document.getElementById('bagCount');
+      const bagTypeTag = document.getElementById('bagTypeTag');
+      const singleBagOption = document.getElementById('singleBagOption');
+      const totalPriceSpan = document.getElementById('totalPrice');
+
+      if (currentCart.length === 0) {
+        cartList.innerHTML = '<p class="text-center text-gray-400 text-xs py-6">尚無選購餐點，請點選左側新增</p>';
+        comboCountSpan.innerText = '0 份';
+        bagCountSpan.innerText = '0';
+        bagTypeTag.innerText = '無餐點';
+        bagTypeTag.className = 'text-[10px] bg-gray-200 text-gray-600 px-1.5 py-0.5 rounded';
+        singleBagOption.classList.add('hidden');
+        totalPriceSpan.innerText = '$0';
+        return;
+      }
+
+      let html = '';
+      currentCart.forEach(item => {
+        html += `
+          <div class="py-2 flex justify-between items-start text-xs">
+            <div class="flex-1 pr-2">
+              <div class="font-bold text-gray-800">${item.mainName} <span class="text-[10px] bg-red-100 text-red-600 font-semibold px-1 py-0.2 rounded ml-1">x${item.qty}</span></div>
+              <div class="text-[11px] text-gray-500 mt-0.5 leading-tight">${item.details}</div>
+            </div>
+            <div class="text-right">
+              <div class="font-bold text-gray-800">$${item.unitPrice * item.qty}</div>
+              <button onclick="removeItem(${item.id})" class="text-[11px] text-red-400 hover:text-red-600 mt-0.5">刪除</button>
+            </div>
+          </div>
+        `;
+      });
+
+      cartList.innerHTML = html;
+
+      const stats = calculateBagsAndTotal();
+      comboCountSpan.innerText = `${stats.totalComboQty} 份`;
+      bagCountSpan.innerText = stats.bagQty;
+
+      if (stats.isMandatory) {
+        bagTypeTag.innerText = '套餐必加購';
+        bagTypeTag.className = 'text-[10px] bg-red-100 text-red-700 px-1.5 py-0.5 rounded font-semibold';
+        singleBagOption.classList.add('hidden');
+      } else {
+        bagTypeTag.innerText = '純單點選配';
+        bagTypeTag.className = 'text-[10px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded font-semibold';
+        singleBagOption.classList.remove('hidden');
+      }
+
+      totalPriceSpan.innerText = `$${stats.finalTotal}`;
+    }
+
+    function submitOrder() {
+      const groupNo = document.getElementById('groupNo').value.trim();
+      const userName = document.getElementById('userName').value.trim();
+      const userPhone = document.getElementById('userPhone').value.trim();
+
+      if (!groupNo || !userName || !userPhone) {
+        alert('請完整填寫：團露編號、姓名與電話！');
+        return;
+      }
+
+      if (currentCart.length === 0) {
+        alert('請先選擇並加入至少一項餐點！');
+        return;
+      }
+
+      const stats = calculateBagsAndTotal();
+
+      let summaryText = `⛺【露營麥當勞點餐】\n`;
+      summaryText += `-------------------------\n`;
+      summaryText += `📍 團露編號：${groupNo}\n`;
+      summaryText += `👤 訂購姓名：${userName}\n`;
+      summaryText += `📞 聯絡電話：${userPhone}\n`;
+      summaryText += `-------------------------\n`;
+      summaryText += `📋 訂購明細：\n`;
+
+      currentCart.forEach((item, idx) => {
+        summaryText += `${idx + 1}. ${item.mainName} (${item.isCombo ? item.comboName : '單點'}) x${item.qty} = $${item.unitPrice * item.qty}\n`;
+        if (item.isCombo) {
+          summaryText += `   └ 細節: ${item.details}\n`;
+        }
+      });
+
+      summaryText += `-------------------------\n`;
+      summaryText += `🛍️ 塑膠袋：${stats.bagQty} 個 ($${stats.bagTotal}元)\n`;
+      summaryText += `💰 總計金額：$${stats.finalTotal} 元\n`;
+
+      document.getElementById('resultBlock').classList.remove('hidden');
+      document.getElementById('resultText').value = summaryText;
+
+      alert('訂購成功！已產生 LINE 格式明細，請點擊右方「複製文字」貼至群組對話框。');
+    }
+
+    function copyResult() {
+      const textarea = document.getElementById('resultText');
+      textarea.select();
+      document.execCommand('copy');
+      alert('已成功複製訂購明細！可以直接貼到 LINE 群組囉。');
+    }
+  </script>
+</body>
+</html>
